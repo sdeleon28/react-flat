@@ -7,7 +7,6 @@ var debug = process.env.NODE_ENV !== 'production';
 
 var COPY_PLUGINS = [
   new CopyWebpackPlugin([{ from: './examples/index.html' }]),
-  new CopyWebpackPlugin([{ from: './deploy_key.enc' }]),
 ];
 
 var DEBUG_PLUGINS = [
@@ -33,7 +32,7 @@ module.exports = {
       {
         test: /\.js?$/,
         exclude: /(node_modules|bower_components)/,
-        loaders: ['react-hot', 'babel-loader'],
+        loaders: ['react-hot-loader', 'babel-loader'],
       },
       {
         test: /\.css$/,
@@ -47,7 +46,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, '/examples/dist'),
-    publicPath: '/react-fullscreen-gallery/',
+    publicPath: '/react-flat/',
     filename: 'index.js',
   },
   devServer: {

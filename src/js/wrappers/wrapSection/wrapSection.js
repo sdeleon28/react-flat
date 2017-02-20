@@ -39,7 +39,12 @@ const wrapSection = (id, Section) => class SectionWrapper extends React.Componen
 
   getSectionStyles() {
     const { height } = this.state;
-    return { height, backgroundSize: 'cover' };
+    return {
+      height,
+      margin: 0,
+      padding: 0,
+      border: 'none',
+    };
   }
 
   /**

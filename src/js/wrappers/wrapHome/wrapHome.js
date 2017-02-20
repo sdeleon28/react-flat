@@ -30,11 +30,9 @@ const handleMouseWheel = (event, scroll) => {
 const scroll = (scrollToId, scrollDirection, sections, sectionYOffsets, currentYOffset) => {
   const topOffsets = [...sectionYOffsets, Infinity];
 
-
   const yOffsetErrorMargin = 2;
   const yOffsetRange = [currentYOffset - yOffsetErrorMargin, currentYOffset + yOffsetErrorMargin];
   const [yOffsetLowBoundary, yOffsetHighBoundary] = yOffsetRange;
-
 
   const currentSectionIndex = topOffsets.findIndex(
       offset => offset > yOffsetLowBoundary && offset < yOffsetHighBoundary);
