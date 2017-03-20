@@ -1,6 +1,8 @@
 import React from 'react';
+import _ from 'lodash';
 import $ from 'jquery';
 import isMobile from '../../utils/isMobile';
+
 
 const UP_KEY = 38;
 const DOWN_KEY = 40;
@@ -36,13 +38,25 @@ const scroll = (scrollToId, scrollDirection, sections, sectionYOffsets, currentY
 
   const currentSectionIndex = topOffsets.findIndex(
       offset => offset > yOffsetLowBoundary && offset < yOffsetHighBoundary);
-  const insideBounds = (n) => (n >= 0 && n < sections.length);
+  const insideBounds = n => (n >= 0 && n < sections.length);
   const nextSectionIndex = scrollDirection === DOWN ?
     currentSectionIndex + 1 : currentSectionIndex - 1;
   if (insideBounds(nextSectionIndex)) {
     const nextSection = sections[nextSectionIndex];
     scrollToId(nextSection);
   }
+};
+
+const scrollToSectionInDirection = (sections, scrollDirection) => {
+  const scrollToId = (id) => {
+    $('html, body').animate({ scrollTop: $(`#${id}`).offset().top }, 300);
+  };
+  const currentYOffset = $(window).scrollTop();
+  const sectionOffsets = sections
+    .map(id => $(`#${id}`))
+    .map(node => node.offset())
+    .map(offset => offset.top);
+  scroll(scrollToId, scrollDirection, sections, sectionOffsets, currentYOffset);
 };
 
 const wrapHome = (sections, Home) => class FlatHome extends React.Component {
@@ -52,19 +66,19 @@ const wrapHome = (sections, Home) => class FlatHome extends React.Component {
     // Bind event handling methods
     this.handleArrows = this.handleArrows.bind(this);
     this.handleMouseWheel = this.handleMouseWheel.bind(this);
-    this.scroll = this.scroll.bind(this);
+    this.scrollToSectionInDirection = _.curry(scrollToSectionInDirection)(sections);
   }
 
   handleArrows(event) {
-    handleKeys(event, this.scroll);
+    handleKeys(event, this.scrollToSectionInDirection);
   }
 
   handleMouseWheel(event) {
-    handleMouseWheel(event, this.scroll);
+    handleMouseWheel(event, this.scrollToSectionInDirection);
   }
 
   componentDidMount() {
-    if (this.isMobileBrowser()) {
+    if (isMobile()) {
       // If it's a mobile device, don't do any fancy scrolling
       $('body').css({ overflow: 'auto' });
     } else {
@@ -77,26 +91,10 @@ const wrapHome = (sections, Home) => class FlatHome extends React.Component {
   }
 
   componentWillUnount() {
-    if (!this.isMobileBrowser()) {
+    if (!isMobile()) {
       window.removeEventListener('wheel', this.handleMouseWheel);
       window.removeEventListener('keydown', this.handleArrows);
     }
-  }
-
-  isMobileBrowser() {
-    return isMobile();
-  }
-
-  scroll(scrollDirection) {
-    const scrollToId = id => {
-      $('html, body').animate({ scrollTop: $(`#${id}`).offset().top }, 300);
-    };
-    const currentYOffset = $(window).scrollTop();
-    const sectionOffsets = sections
-      .map(id => $(`#${id}`))
-      .map(node => node.offset())
-      .map(offset => offset.top);
-    scroll(scrollToId, scrollDirection, sections, sectionOffsets, currentYOffset);
   }
 
   render() {
@@ -106,3 +104,4 @@ const wrapHome = (sections, Home) => class FlatHome extends React.Component {
 
 export default wrapHome;
 export { UP, DOWN, UP_KEY, DOWN_KEY, PG_UP_KEY, PG_DOWN_KEY, handleKeys, handleMouseWheel, scroll };
+
