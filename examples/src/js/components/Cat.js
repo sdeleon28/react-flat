@@ -6,12 +6,15 @@ const styles = {
   container: {
     backgroundImage: `url(${background})`,
   },
+  text: {
+    color: 'white',
+  },
 };
 
 export default () => (
   <div style={styles.container} className="container">
     <div className="inner-container">
-      <h1>This is a cat</h1>
+      <h1 style={styles.text}>This is a cat</h1>
     </div>
   </div>
 );
