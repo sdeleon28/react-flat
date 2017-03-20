@@ -18,23 +18,15 @@ const wrapSection = (id, Section) => class SectionWrapper extends React.Componen
 
   componentWillMount() {
     this.updateDimensions();
-    if (!this.isMobileBrowser()) {
+    if (isMobile()) {
       window.addEventListener('resize', this.updateDimensions);
     }
   }
 
   componentWillUnmount() {
-    if (!this.isMobileBrowser()) {
+    if (isMobile()) {
       window.removeEventListener('resize', this.updateDimensions);
     }
-  }
-
-  /**
-   * Parses the user agent string to determine if the device is mobile. This has nothing to do with
-   * screen size.
-   */
-  isMobileBrowser() {
-    return isMobile();
   }
 
   getSectionStyles() {
@@ -52,7 +44,7 @@ const wrapSection = (id, Section) => class SectionWrapper extends React.Componen
    * screen is resized.
    */
   updateDimensions() {
-    if (this.isMobileBrowser()) {
+    if (isMobile()) {
       // Using screen.height prevents mobile browsers (like Chrome on Android) from jumping the
       // screen contents around when the URL bar slides up and down.
       this.setState({

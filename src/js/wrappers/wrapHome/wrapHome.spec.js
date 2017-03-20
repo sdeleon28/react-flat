@@ -12,12 +12,12 @@ chai.use(spies);
 
 describe('wrapFlatHome.js', () => {
   describe('handleKeys()', () => {
-    const shouldScrollUp = key => {
+    const shouldScrollUp = (key) => {
       const event = {
         keyCode: key,
         stopPropagation: chai.spy(() => {}),
       };
-      const fakeScroll = chai.spy(direction => { expect(direction).to.equal(UP); });
+      const fakeScroll = chai.spy((direction) => { expect(direction).to.equal(UP); });
       handleKeys(event, fakeScroll);
       expect(fakeScroll).to.have.been.called();
       expect(event.stopPropagation).to.have.been.called();
@@ -31,12 +31,12 @@ describe('wrapFlatHome.js', () => {
       shouldScrollUp(PG_UP_KEY);
     });
 
-    const shouldScrollDown = key => {
+    const shouldScrollDown = (key) => {
       const event = {
         keyCode: key,
         stopPropagation: chai.spy(() => {}),
       };
-      const fakeScroll = chai.spy(direction => {
+      const fakeScroll = chai.spy((direction) => {
         expect(direction).to.equal(DOWN);
       });
       handleKeys(event, fakeScroll);
@@ -71,7 +71,7 @@ describe('wrapFlatHome.js', () => {
         ctrlKey: false,
         stopPropagation: chai.spy(() => {}),
       };
-      const fakeScroll = chai.spy(direction => { expect(direction).to.equal(DOWN); });
+      const fakeScroll = chai.spy((direction) => { expect(direction).to.equal(DOWN); });
       handleMouseWheel(event, fakeScroll);
       expect(fakeScroll).to.have.been.called();
       expect(event.stopPropagation).to.have.been.called();
@@ -83,7 +83,7 @@ describe('wrapFlatHome.js', () => {
         ctrlKey: false,
         stopPropagation: chai.spy(() => {}),
       };
-      const fakeScroll = chai.spy(direction => { expect(direction).to.equal(UP); });
+      const fakeScroll = chai.spy((direction) => { expect(direction).to.equal(UP); });
       handleMouseWheel(event, fakeScroll);
       expect(fakeScroll).to.have.been.called();
       expect(event.stopPropagation).to.have.been.called();
@@ -112,19 +112,19 @@ describe('wrapFlatHome.js', () => {
 
       // The window is perfectly positioned on section 2. Next should be 3.
       currentYOffset = 500;
-      scrollToId = chai.spy(id => { expect(id).to.equal('section3'); });
+      scrollToId = chai.spy((id) => { expect(id).to.equal('section3'); });
       scroll(scrollToId, scrollDirection, sections, sectionYOffsets, currentYOffset);
       expect(scrollToId).to.have.been.called();
 
       // The window is off by 1px, below the start of section 2. Next should be 3.
       currentYOffset = 501;
-      scrollToId = chai.spy(id => { expect(id).to.equal('section3'); });
+      scrollToId = chai.spy((id) => { expect(id).to.equal('section3'); });
       scroll(scrollToId, scrollDirection, sections, sectionYOffsets, currentYOffset);
       expect(scrollToId).to.have.been.called();
 
       // The window is off by 1px, above the start of section 2. Next should be section 3.
       currentYOffset = 499;
-      scrollToId = chai.spy(id => { expect(id).to.equal('section3'); });
+      scrollToId = chai.spy((id) => { expect(id).to.equal('section3'); });
       scroll(scrollToId, scrollDirection, sections, sectionYOffsets, currentYOffset);
       expect(scrollToId).to.have.been.called();
     });
@@ -138,19 +138,19 @@ describe('wrapFlatHome.js', () => {
 
       // The window is perfectly positioned on section 2. Previous should be 1.
       currentYOffset = 500;
-      scrollToId = chai.spy(id => { expect(id).to.equal('section1'); });
+      scrollToId = chai.spy((id) => { expect(id).to.equal('section1'); });
       scroll(scrollToId, scrollDirection, sections, sectionYOffsets, currentYOffset);
       expect(scrollToId).to.have.been.called();
 
       // The window is off by 1px, below the start of section 2. Previous should be 1.
       currentYOffset = 501;
-      scrollToId = chai.spy(id => { expect(id).to.equal('section1'); });
+      scrollToId = chai.spy((id) => { expect(id).to.equal('section1'); });
       scroll(scrollToId, scrollDirection, sections, sectionYOffsets, currentYOffset);
       expect(scrollToId).to.have.been.called();
 
       // The window is off by 1px, above the start of section 3. Previous should be section 2.
       currentYOffset = 999;
-      scrollToId = chai.spy(id => { expect(id).to.equal('section2'); });
+      scrollToId = chai.spy((id) => { expect(id).to.equal('section2'); });
       scroll(scrollToId, scrollDirection, sections, sectionYOffsets, currentYOffset);
       expect(scrollToId).to.have.been.called();
     });
